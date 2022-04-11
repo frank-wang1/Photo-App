@@ -6,7 +6,9 @@ main * {
 header * {
     border: solid 1px black;
 }
-
+body {
+    background-color: rgba(128, 128, 128, 0.118);
+}
 .nav_bar {
     display: flex;
     justify-content: space-between;
@@ -45,6 +47,8 @@ header h2 {
     color: rgb(0, 98, 255);
     text-decoration: none;
     margin: 2%;
+    padding-left: 8%;
+    white-space: nowrap;
 }
 aside {
     position: fixed;
@@ -53,10 +57,8 @@ aside {
     right: 0%;
     top: 75px;
     font-family: 'Comfortaa', cursive;
-    /* padding: 0%; */
     flex-direction: column;
     align-content: flex-start;
-    background-color: rgba(128, 128, 128, 0.118);
 }
 
 .myuser {
@@ -119,4 +121,37 @@ aside {
     margin: 9%;
     color: blue;
     text-decoration: none;
+}
+
+.stories_panel {
+    position:fixed;
+    display: flex;
+    width: 55%;
+    height: 15%;
+    top: 75px;
+    left: 70px;
+    background-color: white;
+}
+
+.stories_account {
+    display: flex;
+    flex-direction: column;
+    margin: 3%;
+    padding: 0px;
+    width: 80px;
+    height: 60px;
+    align-items: center;
+}
+
+.stories_account img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.stories_account p {
+    bottom: 4%;
+    margin: 0px;
+    color: rgb(123, 113, 113);
+    font-size: 80%;
 }
