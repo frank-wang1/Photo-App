@@ -2,9 +2,9 @@
     border: solid 1px black;
 } */
 
-header * {
+/* header * {
     border: solid 1px black;
-}
+} */
 body {
     background-color: rgba(128, 128, 128, 0.118);
     margin: 0;
@@ -17,7 +17,7 @@ body {
     justify-content: space-between;
     align-items: center;
     box-sizing: border-box;
-    border: 1px solid black;
+    /* border: 1px solid black; */
     background-color: White;
     position: fixed;
     width: 100%;
@@ -37,21 +37,24 @@ header h2 {
 }
 .nav_buttons {
     display: flex;
+    justify-content: space-between;
     font-family: "Arial", sans-serif;
     color: black;
-    width: 13%;
-    margin: 2%;
+    width: 155px;
+    margin-right: 1%; 
+    /* font-size: 3vw; */
 }
 
 .username {
     width: 50%;
     margin: 2%;
+    font-weight: bold;
 }
 
 .sign_out {
     display: flex;
     align-items: center;
-    color: rgb(0, 98, 255);
+    color: #4182c0;
     text-decoration: none;
     margin: 2%;
     padding-left: 8%;
@@ -126,26 +129,26 @@ aside {
 
 .account .follow {
     margin: 9%;
-    color: blue;
+    color: #4182c0;
     text-decoration: none;
 }
 
 .stories_panel {
     position:relative; 
     display: flex;
-    width: 60%;
+    width: 53vw;
     height: 15%;
     top: 75px;
     left: 70px;
     background-color: white;
-    justify-content: space-between;
+    justify-content: left;
 }
 
 .stories_account {
     display: flex;
     flex-direction: column;
-    margin: 3%;
-    padding: 0px;
+    margin: 2%;
+    padding-left: 0.5em;
     width: 10%;
     height: 100%;
     align-items: center;
@@ -170,13 +173,13 @@ div.card{
     width: 100%;
     height: 100%;
     background-color: white;
-    margin-bottom: 2.5rem;
+    margin-bottom: 3rem;
 }
 
 div.cardsection{
     display: flex;
     flex-direction: column;
-    width: 60%;
+    width: 53vw;
     height: 100%;
     position: relative;
     top: 100px; 
@@ -197,10 +200,15 @@ div.cardsection{
     padding: 1%
 }
 
+.carduserbox p{
+    font-weight: bold;
+}
+
 .iconsandmessages{
     margin: 1rem;
     padding: 0.5rem;
     margin-bottom: 0;
+    margin-top: 0;
 }
 
 .iconsandmessages p{
@@ -216,15 +224,14 @@ div.cardsection{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width:10%;
+    width:15%;
     height: 10%;
-    padding: 0.5rem;
+    /* padding: 0.5rem; */
 }
 
-/* .iconsleft i{
-
-    padding: 7px
-} */
+.iconsleft i{
+    padding: 0.5em;
+}
 
 .iconsection {
     display: flex;
@@ -242,7 +249,7 @@ div.cardsection{
 
 .likesection p{
     margin-top: 0.5em;
-    margin-bottom: 0.5em;
+    margin-bottom: 0;
 }
 
 .iconandcomment{
@@ -256,6 +263,7 @@ div.cardsection{
 
 .captionsection a{
     font-family: "Arial", sans-serif;
+    color: #4182c0;
 }
 
 .captionsection p{
@@ -270,6 +278,11 @@ div.cardsection{
 
 .commentsection p{
     margin-bottom: 0;
+}
+
+.daysago p{
+    color:#8e8e8e;
+    font-size: 0.7rem;
 }
 
 .makecommentsec{
@@ -307,6 +320,7 @@ div.cardsection{
     margin-right: 2rem; 
     justify-content:left;
     font-family: "Arial", sans-serif;
+    color: #4182c0;
     
 }
 /*Tablet*/
@@ -322,13 +336,45 @@ div.cardsection{
         display: none;
     }
     .stories_panel{
-        width:80%;
+        position: relative;
+        top: 75px;
+        width:82%;
         left: 10%;
+        display: flex;
+        justify-content: left;
+        
+    }
+
+    .stories_account{
+        padding-right: 2.5%;
     }
 
     div.cardsection{
-        width:80%;
+        width: 82%;
         left: 10%;
+    }
+
+    div.card{
+        margin-bottom: 1.5em;
+    }
+
+    .nav_buttons {
+        display: flex;
+        font-family: "Arial", sans-serif;
+        color: black;
+        width: 145px;
+        margin: 0.5em;
+        padding-right: 4px;
+        /* font-size: 3vw; */
+    }
+
+    .iconsleft{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width:15vw;
+        height: 10%;
+        /* padding: 0.5rem; */
     }
 
 }
