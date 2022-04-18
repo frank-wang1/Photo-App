@@ -39,7 +39,7 @@
                 <div class="caption">
                     <div class="userhandle">
                         <p>
-                            <span style="font-weight:bold">gibsonjack</span>
+                            <span style="font-weight:bold">{{card.user.get('username')}}</span>
                             {{card.get('title')}}<a href="url" class="more">
                                 more
                             </a>
@@ -55,11 +55,13 @@
             <p>View all 3 comments</p>
             {% endif %} -->
 
-            {% if card.get('comments')|length > 1 %}
+            <!-- {% if card.get('comments')|length > 1 %}
             <p>View all {{card.get('comments')|length}} comments</p>
-            {% endif %}
+            {% endif %} -->
 
             <div class="commentsection">
+                {% if card.get('comments')|length > 1 %}
+                <a href='#' class="blue">View all {{card.get('comments')|length}} comments</a>
                 <div class="comment">
                     <div class="userhandle">
                         <p> 
@@ -68,16 +70,18 @@
                         </p>
                     </div>
                 </div>
+                {% elif card.get('comments')|length == 1 %}
                 <div class="comment">
                     <div class="userhandle">
                         <p>
                             <p> 
-                                <span style="font-weight:bold">vanek97</span>
-                                Here is another comment text text text.
+                                <span style="font-weight:bold">{{card.comments[0].user.username}}</span>
+                                {{card.comments[0].get('text')}}
                             </p>
                         </p>
                     </div>  
                 </div>
+                {% endif %}
             </div>
             <div class="daysago">
                     <p>
