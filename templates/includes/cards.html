@@ -1,0 +1,106 @@
+<div class="cardsection">
+    {% for card in posts %}      
+    <div class="card">
+
+        <div class="carduserbox">
+            <div class="myusername">
+                <p>
+                    {{card.user.get('username')}}
+                </p>
+            </div>
+            <div class="shareicon">
+                <i class="fas fa-ellipsis-h"></i>
+            </div>
+        </div>
+        <img src="{{card.user.get('image_url')}}"/>
+        <div class="iconsandmessages">
+            <div class="iconsection">
+                <div class="iconsleft">
+                     <div class="heart">
+                        <i class="far fa-heart"></i>
+                     </div>
+                     <div class="textbubble">
+                        <i class="far fa-comment"></i>
+                    </div>
+                    <div class="airplane">
+                        <i class="far fa-paper-plane"></i>
+                    </div>
+                </div>
+                <div class="save">
+                    <i class="far fa-bookmark"></i>
+                </div>
+            </div>
+            <div class="likesection">
+                <p>
+                    <span style="font-weight:bold">{{card.get('likes')}} likes</span>
+                </p>
+            </div>
+            <div class="captionsection">
+                <div class="caption">
+                    <div class="userhandle">
+                        <p>
+                            <span style="font-weight:bold">gibsonjack</span>
+                            {{card.get('title')}}<a href="url" class="more">
+                                more
+                            </a>
+                        </p>
+                    </div>
+                </div>
+                
+            </div>
+
+
+
+            <!-- {% if card.get('comments')|length > 1 %}
+            <p>View all 3 comments</p>
+            {% endif %} -->
+
+            {% if card.get('comments')|length > 1 %}
+            <p>View all {{card.get('comments')|length}} comments</p>
+            {% endif %}
+
+            <div class="commentsection">
+                <div class="comment">
+                    <div class="userhandle">
+                        <p> 
+                            <span style="font-weight:bold">{{card.comments[0].user.username}}</span>
+                            {{card.comments[0].get('text')}}
+                        </p>
+                    </div>
+                </div>
+                <div class="comment">
+                    <div class="userhandle">
+                        <p>
+                            <p> 
+                                <span style="font-weight:bold">vanek97</span>
+                                Here is another comment text text text.
+                            </p>
+                        </p>
+                    </div>  
+                </div>
+            </div>
+            <div class="daysago">
+                    <p>
+                        {{card.get('display_time')}}
+                    </p>
+            </div>
+            </div>
+            <div class="makecommentsec">
+                <div class="iconandcomment">
+                    <div class="smileicon">
+                        <i class="far fa-smile"></i>
+                    </div>
+                    <div class="addcomment">
+                        <input type="text" placeholder="Add a comment...">
+                    </div>
+                </div>
+                <div class="post">
+                    <a href="url" class="more" target="blank">
+                        Post
+                    </a>
+                </div>
+
+            </div>
+    </div>   
+    {% endfor %}
+</div>

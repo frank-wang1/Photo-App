@@ -1,0 +1,21 @@
+<section class="stories_panel">
+    {% for story in stories %}
+    <div class="stories_account">
+        <img src="{{story.user.get('profile_url')}}"/>
+        <p>
+            {{story.user.get('username')}}
+        </p>
+    </div>
+    {% endfor %}
+</section>
+
+
+
+
+
+
+
+
+
+
+
