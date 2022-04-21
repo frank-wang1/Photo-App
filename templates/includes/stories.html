@@ -1,7 +1,7 @@
 <section class="stories_panel">
     {% for story in stories %}
     <div class="stories_account">
-        <img src="{{story.user.get('profile_url')}}"/>
+        <img src="{{story.user.get('profile_url')}}", alt="stories_pfp"/>
         <p>
             {{story.user.get('username')}}
         </p>

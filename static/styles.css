@@ -56,7 +56,7 @@ header h2 {
 .sign_out {
     display: flex;
     align-items: center;
-    color: #4182c0;
+    color: #3871a7;
     text-decoration: none;
     margin: 2%;
     padding-left: 8%;
@@ -148,7 +148,7 @@ aside {
 
 .account .follow {
     margin: 9%;
-    color: #4182c0;
+    color: #3871a7;
     text-decoration: none;
     margin-left: auto;
     margin-right: 0;
@@ -285,7 +285,7 @@ div.cardsection{
 
 .captionsection a{
     font-family: "Arial", sans-serif;
-    color: #4182c0;
+    color: #3871a7;
 }
 
 .captionsection p{
@@ -300,7 +300,7 @@ div.cardsection{
 
 .blue{
     font-family: "Arial", sans-serif;
-    color: #4182c0;
+    color: #3871a7;
     text-decoration: none;
     margin-left: 0.9rem;
     font-size: 103%;
@@ -315,7 +315,7 @@ div.cardsection{
 }
 
 .daysago p{
-    color:#8e8e8e;
+    color:#706c6c;
     font-size: 0.7rem;
 }
 
@@ -354,7 +354,7 @@ div.cardsection{
     margin-right: 2rem; 
     justify-content:left;
     font-family: "Arial", sans-serif;
-    color: #4182c0;
+    color: #3871a7;
     
 }
 /*Tablet*/
