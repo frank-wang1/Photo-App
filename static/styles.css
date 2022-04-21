@@ -86,9 +86,20 @@ aside {
     font-family: 'Comfortaa', cursive;
 }
 
+.pfp{
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+}
+
 .pfp, .account img {
     border-radius: 50%;
     margin: 3%;
+}
+
+.account img {
+    padding-right: 0;
+    margin-right: 0;
 }
 
 #myusername {
@@ -281,6 +292,18 @@ div.cardsection{
 .more {
     margin-right: 0.5rem;
     text-decoration: none;
+}
+
+.blue{
+    font-family: "Arial", sans-serif;
+    color: #4182c0;
+    text-decoration: none;
+    margin-left: 0.9rem;
+    font-size: 103%;
+}
+
+.commentsection {
+    padding-top: 9px;
 }
 
 .commentsection p{
