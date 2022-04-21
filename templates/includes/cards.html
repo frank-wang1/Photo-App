@@ -12,7 +12,7 @@
                 <i class="fas fa-ellipsis-h"></i>
             </div>
         </div>
-        <img src="{{card.user.get('image_url')}}" alt="card_pfp"/>
+        <img src="{{card.user.get('image_url')}}" alt="Post from {{card.user.get('username')}}"/>
         <div class="iconsandmessages">
             <div class="iconsection">
                 <div class="iconsleft">
@@ -40,7 +40,7 @@
                     <div class="userhandle">
                         <p>
                             <span style="font-weight:bold">{{card.user.get('username')}}</span>
-                            {{card.get('title')}}<a href="url" class="more">
+                            {{card.get('title')}}<a href="#" class="more" target="blank">
                                 more
                             </a>
                         </p>
@@ -95,12 +95,14 @@
                         <i class="far fa-smile"></i>
                     </div>
                     <div class="addcomment">
-                        <input type="text" placeholder="Add a comment..." title = "text_input_box" id="text">
-
+                        <!-- <input type="text" placeholder="Add a comment..." title = "Comment Box" id="text"> -->
+                        <p>
+                            Add a comment...
+                        </p>
                     </div>
                 </div>
                 <div class="post">
-                    <a href="url" class="more" target="blank">
+                    <a href="#" class="more" target="blank">
                         Post
                     </a>
                 </div>
