@@ -1,0 +1,14 @@
+What corrections did you have to make?
+	We added alt text to the all of the images to make them more accessible when the actual image is not generated. 
+	This included adding unique alt text to every image. Additionally we changed colors of fonts in order to pass contrast requirements by making grey and blue fonts darker.
+
+Given that the photos and captions rely on user-generated content, do you think that the accessibility problems are all solvable? Why or why not? 
+	No,because the user generated content can generate colors that don’t necessarily pass the contrast requirements.
+
+Do you think your website is usable if you turn off the CSS? Why or why not? 
+	No, because the CSS controls many important aspects of the website, such as the clickable buttons and links. 
+	Without CSS, the website would also not look anywhere near the way it does now, and there would be no stylistic features.
+
+Do you think your website is usable if you turn off the images? Why or why not? 
+	Yes, because the alt text describes what each image is. So, without the actual image, the page is still usable since there is a description.
+
