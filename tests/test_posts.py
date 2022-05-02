@@ -13,7 +13,7 @@ class TestPostListEndpoint(unittest.TestCase):
     def test_posts_get_defaults_to_20(self):
         response = requests.get(root_url + '/api/posts')
         data = response.json()
-        self.assertLessEqual(len(data), 20)
+        self.assertEqual(len(data), 20)
         self.assertEqual(response.status_code, 200)
 
     def test_posts_get_has_required_data(self):
@@ -274,7 +274,7 @@ if __name__ == '__main__':
         TestPostListEndpoint('test_post_post_image_only'),                  # post (create)
         TestPostListEndpoint('test_post_post_bad_data_400_error'),          # post (create)
 
-        # # Detail Endpoint Tests
+        # # # Detail Endpoint Tests
         TestPostDetailEndpoint('test_post_patch_correct_data_200'),                          # patch (update)
         TestPostDetailEndpoint('test_post_patch_blanks_not_overwritten'),   # patch (update)
         TestPostDetailEndpoint('test_post_patch_invalid_id_404'),           # patch (update)

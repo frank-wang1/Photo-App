@@ -12,13 +12,34 @@ class FollowingListEndpoint(Resource):
     
     def get(self):
         # return all of the "following" records that the current user is following
-        return Response(json.dumps([]), mimetype="application/json", status=200)
+        following = Following.query.filter_by(user_id = self.current_user.id).all()
+        following_json = [followee.to_dict_following() for followee in following]
+        return Response(json.dumps(following_json), mimetype="application/json", status=200)
+        #return Response(json.dumps([]), mimetype="application/json", status=200)
 
     def post(self):
         # create a new "following" record based on the data posted in the body 
         body = request.get_json()
-        print(body)
-        return Response(json.dumps({}), mimetype="application/json", status=201)
+
+ 
+        following_id = body.get('user_id')
+
+        #not working
+        if following_id in (Following.query.filter_by(user_id = self.current_user.id).all()):
+            return Response(json.dumps({"message": "'user_url' is required"}), mimetype="application/json", status=400)
+        
+        #this is right
+        if not following_id:
+            return Response(json.dumps({"message": "'user_url' is required"}), mimetype="application/json", status=400)
+       
+        new_post = Following(self.current_user.id, following_id)
+        #if new_post.user_id != self.current_user.id:
+        #    return Response(json.dumps({"message": "id={0} is invalid"}), mimetype="application/json", status=201)
+
+        db.session.add(new_post)    # issues the insert statement
+        db.session.commit()         # commits the change to the database 
+
+        return Response(json.dumps(new_post.to_dict_following()), mimetype="application/json", status=201)
 
 class FollowingDetailEndpoint(Resource):
     def __init__(self, current_user):
