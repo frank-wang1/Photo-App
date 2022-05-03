@@ -33,6 +33,8 @@ class FollowerListEndpoint(Resource):
         # following_json = [followee.to_dict_follower() for followee in following]
         # return Response(json.dumps(following_json), mimetype="application/json", status=200)
 
+        #Random Comment test
+
         followers = Following.query.filter_by(following_id = self.current_user.id).all()
         following_json = [followee.to_dict_follower() for followee in followers]
         return Response(json.dumps(following_json), mimetype="application/json", status=200)
