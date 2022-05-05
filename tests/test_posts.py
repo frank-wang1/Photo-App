@@ -184,7 +184,7 @@ class TestPostDetailEndpoint(unittest.TestCase):
         self.assertEqual(response.status_code, 404)
 
     def test_post_patch_unauthorized_id_404(self):
-        post_no_access = utils.get_post_that_user_cannot_access(self.current_user.get('id'))
+        post_no_access = utils.get_post_that_user_cannot_edit_delete(self.current_user.get('id'))
         url = '{0}/api/posts/{1}'.format(root_url, post_no_access.get('id'))
         
         response = requests.patch(url, json={})
@@ -215,7 +215,7 @@ class TestPostDetailEndpoint(unittest.TestCase):
         self.assertEqual(response.status_code, 404)
 
     def test_post_delete_unauthorized_id_404(self):
-        post_no_access = utils.get_post_that_user_cannot_access(self.current_user.get('id'))
+        post_no_access = utils.get_post_that_user_cannot_edit_delete(self.current_user.get('id'))
         url = '{0}/api/posts/{1}'.format(root_url, post_no_access.get('id'))
         
         response = requests.delete(url)
@@ -274,7 +274,7 @@ if __name__ == '__main__':
         TestPostListEndpoint('test_post_post_image_only'),                  # post (create)
         TestPostListEndpoint('test_post_post_bad_data_400_error'),          # post (create)
 
-        # # # Detail Endpoint Tests
+        # # Detail Endpoint Tests
         TestPostDetailEndpoint('test_post_patch_correct_data_200'),                          # patch (update)
         TestPostDetailEndpoint('test_post_patch_blanks_not_overwritten'),   # patch (update)
         TestPostDetailEndpoint('test_post_patch_invalid_id_404'),           # patch (update)

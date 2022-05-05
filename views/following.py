@@ -20,7 +20,7 @@ class FollowingListEndpoint(Resource):
     def post(self):
         # create a new "following" record based on the data posted in the body 
         body = request.get_json()
-
+        print("this is the body",body)
  
         following_id = body.get('user_id')
 
@@ -32,6 +32,19 @@ class FollowingListEndpoint(Resource):
         if not following_id:
             return Response(json.dumps({"message": "'user_url' is required"}), mimetype="application/json", status=400)
        
+        #checking that user id is valid
+        if not Following.query.get(body.get('user_id')):
+            return Response(json.dumps({"message": "invalid user id"}), mimetype="application/json", status=404)
+
+        
+        #checking for duplicates
+        following = Following.query.filter_by(user_id = self.current_user.id).all()
+        if body.get("user_id") in [f.following_id for f in following]:   
+            return Response(json.dumps({"message" : "duplicate following"}), mimetype="application/json", status=400)
+    
+        # if not isinstance(following_id, int):
+        #    return Response(json.dumps({"message" : "invalid user id format"}), mimetype="application/json", status=400)
+
         new_post = Following(self.current_user.id, following_id)
         #if new_post.user_id != self.current_user.id:
         #    return Response(json.dumps({"message": "id={0} is invalid"}), mimetype="application/json", status=201)
@@ -47,9 +60,19 @@ class FollowingDetailEndpoint(Resource):
     
     def delete(self, id):
         # delete "following" record where "id"=id
-        print(id)
-        return Response(json.dumps({}), mimetype="application/json", status=200)
+        # print(id)
+        # return Response(json.dumps({}), mimetype="application/json", status=200)
+        Following_rec = Following.query.get(id)
+        if not Following_rec:
+            return Response(json.dumps({"message": "id={0} is invalid"}), mimetype="application/json", status=404)
 
+        if Following_rec.user_id != self.current_user.id:
+            return Response(json.dumps({"message": "id={0} is invalid"}), mimetype="application/json", status=404)
+
+        
+        Following.query.filter_by(id=id).delete()
+        db.session.commit()
+        return Response(json.dumps("message:" "Following record id={0} was succesfully deleted.".format(id)), mimetype="application/json", status=200)
 
 
 
