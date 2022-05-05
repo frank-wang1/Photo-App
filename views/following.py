@@ -20,39 +20,50 @@ class FollowingListEndpoint(Resource):
     def post(self):
         # create a new "following" record based on the data posted in the body 
         body = request.get_json()
-        print("this is the body",body)
  
-        following_id = body.get('user_id')
+    
 
         #not working
-        if following_id in (Following.query.filter_by(user_id = self.current_user.id).all()):
-            return Response(json.dumps({"message": "'user_url' is required"}), mimetype="application/json", status=400)
+        # if body.get('user_id') in (Following.query.filter_by(user_id = self.current_user.id).all()):
+        #     return Response(json.dumps({"message": "'user_url' is required"}), mimetype="application/json", status=400)
         
         #this is right
-        if not following_id:
+        if not body.get('user_id'):
             return Response(json.dumps({"message": "'user_url' is required"}), mimetype="application/json", status=400)
        
+        following_id = body.get('user_id')
+
         #checking that user id is valid
-        if not Following.query.get(body.get('user_id')):
+        
+
+        if (type(following_id) == str and not following_id.isdecimal()) or (type(following_id) != int and type(following_id) != str):
+            return Response(json.dumps({"message": "following id must be int"}), mimetype="application/json", status=400)
+      
+        if not User.query.get(following_id):
             return Response(json.dumps({"message": "invalid user id"}), mimetype="application/json", status=404)
 
-        
         #checking for duplicates
-        following = Following.query.filter_by(user_id = self.current_user.id).all()
-        if body.get("user_id") in [f.following_id for f in following]:   
+        # following = Following.query.filter_by(user_id = self.current_user.id).all()
+        # if following_id in [f.following_id for f in following]:   
+        #     return Response(json.dumps({"message" : "duplicate following"}), mimetype="application/json", status=400)
+        num_of_following = Following.query.filter_by(user_id = self.current_user.id).filter_by(following_id=following_id).count()
+        if num_of_following > 0:   
             return Response(json.dumps({"message" : "duplicate following"}), mimetype="application/json", status=400)
     
         # if not isinstance(following_id, int):
         #    return Response(json.dumps({"message" : "invalid user id format"}), mimetype="application/json", status=400)
 
-        new_post = Following(self.current_user.id, following_id)
+        new_following = Following(
+            user_id = self.current_user.id, 
+            following_id = following_id
+        )
         #if new_post.user_id != self.current_user.id:
         #    return Response(json.dumps({"message": "id={0} is invalid"}), mimetype="application/json", status=201)
 
-        db.session.add(new_post)    # issues the insert statement
+        db.session.add(new_following)    # issues the insert statement
         db.session.commit()         # commits the change to the database 
 
-        return Response(json.dumps(new_post.to_dict_following()), mimetype="application/json", status=201)
+        return Response(json.dumps(new_following.to_dict_following()), mimetype="application/json", status=201)
 
 class FollowingDetailEndpoint(Resource):
     def __init__(self, current_user):

@@ -2,7 +2,7 @@ from flask import Response, request
 from flask_restful import Resource
 import json
 from models import db, Comment, Post
-from views import get_authorized_user_ids
+from views import get_authorized_user_ids,can_view_post
 
 class CommentListEndpoint(Resource):
 
@@ -22,22 +22,30 @@ class CommentListEndpoint(Resource):
         if not body.get('text'):
             return Response(json.dumps({"message": "'text' is required"}), mimetype="application/json", status=400)
 
-        if not Comment.query.get(body.get('post_id')):
-            return Response(json.dumps({"message": "invalid post id"}), mimetype="application/json", status=404)
+        post_id = body.get('post_id')
 
-        user_ids = get_authorized_user_ids(self.current_user)
-        if Comment.query.get(body.get('post_id')).user_id not in user_ids:
-            return Response(json.dumps({"message": "id is invalid"}), mimetype="application/json", status=404)
+        if (type(post_id) == str and not post_id.isdecimal()) or (type(post_id) != int and type(post_id) != str):
+            return Response(json.dumps({"message": "post id must be int"}), mimetype="application/json", status=400)
 
-        new_post = Comment(
-            post_id=body.get('post_id'),
+        # if not Comment.query.get(body.get('post_id')):
+        #     return Response(json.dumps({"message": "invalid post id"}), mimetype="application/json", status=404)
+
+        if not can_view_post(post_id, self.current_user):
+            return Response(json.dumps({"message": "cant view post"}), mimetype="application/json", status=404)
+
+        # user_ids = get_authorized_user_ids(self.current_user)
+        # if Comment.query.get(body.get('post_id')).user_id not in user_ids:
+        #     return Response(json.dumps({"message": "id is invalid"}), mimetype="application/json", status=404)
+
+        new_comment = Comment(
+            post_id=post_id,
             text=body.get('text'),
             user_id=self.current_user.id, # must be a valid user_id or will throw an error
         )
-        db.session.add(new_post)    # issues the insert statement
+        db.session.add(new_comment)    # issues the insert statement
         db.session.commit()         # commits the change to the database 
 
-        return Response(json.dumps(new_post.to_dict()), mimetype="application/json", status=201)
+        return Response(json.dumps(new_comment.to_dict()), mimetype="application/json", status=201)
         
 class CommentDetailEndpoint(Resource):
 

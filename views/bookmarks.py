@@ -20,44 +20,61 @@ class BookmarksListEndpoint(Resource):
         # create a new "bookmark" based on the data posted in the body 
         body = request.get_json()
 
-        #bookmark_id = body.get('post_id')
+        
         # print(body)
         # return Response(json.dumps({}), mimetype="application/json", status=201)
         
-        #bookmark = Bookmark.query.get(bookmark_id)
+        # bookmark = Bookmark.query.get(body.get('post_id'))
         #checking if post id was given
 
+        #got body
+        # check if post id was in body if not retuern error
+        # check if type of post id was string adn then if all characters in string is (isdecimal)
 
+
+        #check if post id given
         if not body.get('post_id'):
             return Response(json.dumps({"message": "post_id is required"}), mimetype="application/json", status=400)
        
-        #checking that post id is valid
-        if not Bookmark.query.get(body.get('post_id')):
-            #check if it a sting(not working though)
-            if isinstance(body.get('post_id'),str):
-                bookmark_id = int(body.get('post_id'))
-            else:
-                return Response(json.dumps({"message": "invalid post id"}), mimetype="application/json", status=404)
+        post_id = body.get('post_id')
 
+        if (type(post_id) == str and not post_id.isdecimal()) or (type(post_id) != int and type(post_id) != str):
+            return Response(json.dumps({"message": "post id must be int"}), mimetype="application/json", status=400)
+        
+        if not can_view_post(post_id, self.current_user):
+            return Response(json.dumps({"message": "cant view post"}), mimetype="application/json", status=404)
         
         #checking for duplicates
-        bookmarks = Bookmark.query.filter_by(user_id = self.current_user.id).all()
-        if int(body.get('post_id')) in [b.post_id for b in bookmarks]:   
+        num_of_bookmarks = Bookmark.query.filter_by(user_id = self.current_user.id).filter_by(post_id=post_id).count()
+        if num_of_bookmarks > 0:   
             return Response(json.dumps({"message" : "duplicate bookmark"}), mimetype="application/json", status=400)
-    
-        #checking that post is authorized
-        # user_ids = get_authorized_user_ids(self.current_user)
-        if can_view_post(int(body.get('post_id')),self.current_user) == False:
-            return Response(json.dumps({"message": "not authorized"}), mimetype="application/json", status=404)
+        
+        #checking that post id is valid
+        # if not Bookmark.query.get(body.get('post_id')):
+        # #     #check if it a sting(not working though)
+        # #     if isinstance(body.get('post_id'),str):
+        # #         bookmark_id = int(body.get('post_id'))
+        # #     else:
+        #     return Response(json.dumps({"message": "invalid post id"}), mimetype="application/json", status=404)
 
-        new_post = Bookmark(
+        
+     
+    
+        # checking that post is authorized
+        # user_ids = get_authorized_user_ids(self.current_user)
+        # if can_view_post(int(body.get('post_id')),self.current_user) == False:
+        #     return Response(json.dumps({"message": "not authorized"}), mimetype="application/json", status=404)
+
+        
+
+        new_Bookmark = Bookmark(
             user_id=self.current_user.id, # must be a valid user_id or will throw an error
-            post_id=body.get('post_id')
+            post_id=post_id
         )
-        db.session.add(new_post)    # issues the insert statement
+        db.session.add(new_Bookmark)    # issues the insert statement
         db.session.commit()         # commits the change to the database 
 
-        return Response(json.dumps(new_post.to_dict), mimetype="application/json", status=201)
+        return Response(json.dumps(new_Bookmark.to_dict()), mimetype="application/json", status=201)
 
 class BookmarkDetailEndpoint(Resource):
 
