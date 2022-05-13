@@ -30,7 +30,10 @@ class PostListEndpoint(Resource):
 
         posts = Post.query.filter(Post.user_id.in_(user_ids)).limit(limit).all()
         posts_json = [post.to_dict() for post in posts]
-        return Response(json.dumps(posts_json), mimetype="application/json", status=200)
+        data = [
+        post.to_dict(user=self.current_user) for post in posts
+        ]
+        return Response(json.dumps(data), mimetype="application/json", status=200)
 
     def post(self):   #HTTP POST
         # create a new post based on the data posted in the body 
