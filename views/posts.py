@@ -21,7 +21,7 @@ class PostListEndpoint(Resource):
         user_ids = get_authorized_user_ids(self.current_user)
 
         try:
-            limit = int(args.get('limit') or 20) # 10 is the default
+            limit = int(args.get('limit') or 10) # 10 is the default
         except:
             return Response(json.dumps({"message": "the limit parameter is invalid"}), mimetype="application/json", status=400)
         if limit > 50:
@@ -108,7 +108,7 @@ class PostDetailEndpoint(Resource):
             return Response(json.dumps({"message": "id={0} is invalid"}), mimetype="application/json", status=404)
 
 
-        return Response(json.dumps(post.to_dict()), mimetype="application/json", status=200)
+        return Response(json.dumps(post.to_dict(user=self.current_user)), mimetype="application/json", status=200)
 
 def initialize_routes(api):
     api.add_resource(

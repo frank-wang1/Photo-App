@@ -44,6 +44,11 @@ button.link.unfollow {
     border: solid 1px #CCC;
     border-radius: 4px;
 }
+
+far fa-heart.unlike{
+    color: red;
+}
+
 header {
     margin-top: 20px;
 }
@@ -247,6 +252,175 @@ aside header .pic {
 .visuallyhidden {
     display: none;
 }
+
+div.card{
+    position:relative; 
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    margin-bottom: 3rem;
+}
+
+div.cardsection{
+    display: flex;
+    flex-direction: column;
+    width: 53vw;
+    height: 100%;
+    position: relative;
+    top: 100px; 
+    left: 70px;
+    
+}
+ 
+.card img{
+    width: 100%;
+    height: 100%;
+}
+
+.carduserbox{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin:1%;
+    padding: 1%
+}
+
+.carduserbox p{
+    font-weight: bold;
+}
+
+.iconsandmessages{
+    margin: 1rem;
+    padding: 0.5rem;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+.iconsandmessages p{
+    margin-left: 0.5rem;
+    font-family: "Arial", sans-serif;
+}
+
+.iconsandmessages span{
+    font-family: "Arial", sans-serif;
+}
+
+.iconsleft{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width:15%;
+    height: 10%;
+    /* padding: 0.5rem; */
+}
+
+.iconsleft i{
+    padding: 0.5em;
+}
+
+.iconsection {
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.save{
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    margin:1%;
+    padding: 1%
+}
+
+.likesection p{
+    margin-top: 0.5em;
+    margin-bottom: 0;
+}
+
+.iconandcomment{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    margin:1%;
+    padding: 1%;
+    width:80%
+}
+
+.captionsection a{
+    font-family: "Arial", sans-serif;
+    color: #3871a7;
+}
+
+.captionsection p{
+    margin-bottom: 0;
+}
+
+
+.more {
+    margin-right: 0.5rem;
+    text-decoration: none;
+}
+
+.blue{
+    font-family: "Arial", sans-serif;
+    color: #3871a7;
+    text-decoration: none;
+    margin-left: 0.9rem;
+    font-size: 103%;
+}
+
+.commentsection {
+    padding-top: 9px;
+}
+
+.commentsection p{
+    margin-bottom: 0;
+}
+
+.daysago p{
+    color:#706c6c;
+    font-size: 0.7rem;
+}
+
+.makecommentsec{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: solid 1.5px rgba(128, 128, 128, 0.118);
+    width:100%;
+    
+}
+
+.smileicon{
+    padding: 1rem;
+}
+
+.addcomment{
+    width:100%;
+}
+
+.addcomment input{
+    border-width:0px;
+    border:none;
+    outline:none;
+    width:100%;
+}
+
+.caption{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.post a{
+    display: flex;
+    margin-right: 2rem; 
+    justify-content:left;
+    font-family: "Arial", sans-serif;
+    color: #3871a7;
+    
+}
+
 
 
 /* button.link unfollow{

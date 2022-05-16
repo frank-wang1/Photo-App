@@ -15,12 +15,120 @@ const handleBookmark = ev =>{
     console.log("handle bookmark functionality");
 };
 
+// <section>
+    //     <img src="${post.image_url}"/>
+    //     <button onclick = "handeLike(event);"> Like</button>
+    // </section>
 const post2Html = post => {
     return `
-    <section>
-        <img src="${post.image_url}"/>
-        <button onclick = "handeLike(event);"> Like</button>
-    </section>
+    
+    <div class="card">
+
+        <div class="carduserbox">
+            <div class="myusername">
+                <p>
+                    ${post.user.username}
+                </p>
+            </div>
+            <div class="shareicon">
+                <i class="fas fa-ellipsis-h"></i>
+            </div>
+        </div>
+        <img src="${post.image_url}" alt="card_pfp"/>
+        <div class="iconsandmessages">
+            <div class="iconsection">
+                <div class="iconsleft">
+                     <div class="heart">
+                        <a onclick="handleLike(event)" ><i class="far fa-heart" aria-checked="false" ></i></a>
+                     </div>
+                     <div class="textbubble">
+                        <i class="far fa-comment"></i>
+                    </div>
+                    <div class="airplane">
+                        <i class="far fa-paper-plane"></i>
+                    </div>
+                </div>
+                <div class="save">
+                    <i class="far fa-bookmark"></i>
+                </div>
+            </div>
+            <div class="likesection">
+                <p>
+                    <span style="font-weight:bold">${post.likes.length} likes</span>
+                </p>
+            </div>
+            <div class="captionsection">
+                <div class="caption">
+                    <div class="userhandle">
+                        <p>
+                            <span style="font-weight:bold">${post.user.username}</span>
+                            ${post.caption}<a href="url" class="more">
+                                more
+                            </a>
+                        </p>
+                    </div>
+                </div>
+                
+            </div>
+
+
+
+            <!-- {% if card.get('comments')|length > 1 %}
+            <p>View all 3 comments</p>
+            {% endif %} -->
+
+            <!-- {% if card.get('comments')|length > 1 %}
+            <p>View all {{card.get('comments')|length}} comments</p>
+            {% endif %} -->
+
+            <div class="commentsection">
+                {% if card.get('comments')|length > 1 %}
+                <a href='#' class="blue">View all {{card.get('comments')|length}} comments</a>
+                <div class="comment">
+                    <div class="userhandle">
+                        <p> 
+                            <span style="font-weight:bold">{{card.comments[0].user.username}}</span>
+                            {{card.comments[0].get('text')}}
+                        </p>
+                    </div>
+                </div>
+                {% elif card.get('comments')|length == 1 %}
+                <div class="comment">
+                    <div class="userhandle">
+                        <p>
+                            <p> 
+                                <span style="font-weight:bold">{{card.comments[0].user.username}}</span>
+                                {{card.comments[0].get('text')}}
+                            </p>
+                        </p>
+                    </div>  
+                </div>
+                {% endif %}
+            </div>
+            <div class="daysago">
+                    <p>
+                        ${post.display_time}
+                    </p>
+            </div>
+            </div>
+            <div class="makecommentsec">
+                <div class="iconandcomment">
+                    <div class="smileicon">
+                        <i class="far fa-smile"></i>
+                    </div>
+                    <div class="addcomment">
+                        <input type="text" placeholder="Add a comment..." title = "text_input_box" id="text">
+
+                    </div>
+                </div>
+                <div class="post">
+                    <a href="url" class="more" target="blank">
+                        Post
+                    </a>
+                </div>
+
+            </div>
+    </div>   
     `;
 };
 
@@ -124,13 +232,63 @@ const deleteFollowing = async (elem) => {
 const toggleFollow = async(ev) =>{
     const elem = ev.currentTarget
     if (elem.getAttribute ('aria-checked') === 'false'){
-        console.log("create follwoing")
+        console.log("create following")
         await createFollowing(elem)
     } else{
         console.log('delete following')
         await deleteFollowing(elem)
     }
 };
+
+
+const createLike = async (elem) => {
+    const postbody = {"user_id":elem.dataset.curre}
+    const response = await fetch ('/api/post',{
+        method:"POST",
+        headers: {
+            'Content-type':'application/json',
+        },
+        body: JSON.stringify(postbody)
+    })
+    const liking = await response.json()
+    elem.innerHTML = "unlike";
+    elem.classList.add('unlike');
+    elem.classList.remove('like');
+    elem.setAttribute('aria-checked', 'true');
+    elem.setAttribute('aria-label', 'follow');
+    // elem.setAttribute('data-like-id', following.id);
+    console.log("liked");
+};
+
+// const deleteLike = async (elem) => {
+//     const response = await fetch (`/api/following/${elem.dataset.followingId}`,{
+//         method:"DELETE",
+//         headers: {
+//             'Content-type':'application/json',
+//         },
+//     })
+//     const following_deleted = await response.json()
+//     elem.innerHTML = "follow";
+//     elem.classList.add('follow');
+//     elem.classList.remove('unfollow');
+//     elem.setAttribute('aria-checked', 'false');
+//     elem.removeAttribute('data-following-id');
+//     console.log(following_deleted);
+// };
+
+
+const toggleLike = async(ev) =>{
+    const elem = ev.currentTarget
+    if (elem.getAttribute ('aria-checked') === 'false'){
+        console.log("create like")
+        await createLike(elem)
+    } else{
+        console.log('delete like')
+        await deleteLike(elem)
+    }
+};
+
+
 
 const initPage = () => {
     displayPosts();
