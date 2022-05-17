@@ -159,7 +159,20 @@ main {
     margin-right: 4px;
 }
 
-.card  button.link {
+.heart button{
+    background-color: transparent;
+    border: none;
+}
+
+.fas.fa-heart{
+    color:red;
+}
+
+.save button{
+    background-color: transparent;
+    border: none;
+}
+/* .card  button.link {
     font-size: 1em;
 }
 
@@ -195,7 +208,7 @@ main {
 .card .add-comment i {
     font-size: 1.3em;
     margin-right: 10px;
-}
+} */
 
 .suggestion-text {
     color: #666;

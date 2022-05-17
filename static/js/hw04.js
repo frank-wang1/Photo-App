@@ -9,7 +9,76 @@ const story2Html = story => {
 
 const handleLike = ev =>{
     console.log("handle like functionality");
+    const elem = ev.currentTarget;
+    if (elem.getAttribute('aria-checked') === 'true'){
+        console.log('unlike post');
+        deleteLike(elem);
+    }else {
+        console.log('like post');
+        createLike(elem)
+    }
 };
+
+const createLike = elem => {
+    const postId = Number(elem.dataset.postId)
+    const postBody = {"post_id": postId}
+    fetch ('/api/posts/likes/',{
+        method:"POST",
+        headers: {
+            'Content-type':'application/json',
+        },
+        body: JSON.stringify(postBody)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        console.log('redraw the post');
+        redrawPost(postId);
+    });
+    // const liking = await response.json()
+    // elem.innerHTML = "unlike";
+    // elem.classList.add('unlike');
+    // elem.classList.remove('like');
+    // elem.setAttribute('aria-checked', 'true');
+    // elem.setAttribute('aria-label', 'follow');
+    // // elem.setAttribute('data-like-id', following.id);
+    // console.log("liked");
+};
+
+const deleteLike = elem => {
+    const postId = Number(elem.dataset.postId)
+    console.log('unlike post', elem)
+    fetch (`/api/posts/likes/${elem.dataset.likeId}`,{
+        method:"DELETE",
+        headers: {
+            'Content-type':'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        redrawPost(postId);
+    });
+    // const following_deleted = await response.json()
+    // elem.innerHTML = "follow";
+    // elem.classList.add('follow');
+    // elem.classList.remove('unfollow');
+    // elem.setAttribute('aria-checked', 'false');
+    // elem.removeAttribute('data-following-id');
+    // console.log(following_deleted);
+};
+
+const redrawPost = postId => {
+    fetch(`/api/posts/${postId}`)
+        .then(response => response.json())
+        .then(updatedPost => {
+            console.log(updatedPost);
+            const html = post2Html(updatedPost);
+            const newElement = stringToHTML(html);
+            const postElement = document.querySelector(`#post_${postId}`);
+            postElement.innerHTML = newElement.innerHTML;
+    });
+}
 
 const handleBookmark = ev =>{
     console.log("handle bookmark functionality");
@@ -19,11 +88,69 @@ const handleBookmark = ev =>{
     //     <img src="${post.image_url}"/>
     //     <button onclick = "handeLike(event);"> Like</button>
     // </section>
+
+
+const renderLikeButton = post => {
+    if (post.current_user_like_id){
+        return `
+        <button 
+            data-post-id = "${post.id}"
+            data-like-id = "${post.current_user_like_id}"
+            aria-checked="true"
+            aria-label="Like/Unlike"
+            onclick="handleLike(event);" >
+            <i class="fas fa-heart" ></i>
+        </button>
+        `;
+    }else{
+        return `
+        <button 
+            data-post-id = "${post.id}"
+            aria-checked="false"
+            aria-label="Like/Unlike"
+            onclick="handleLike(event);" >
+            <i class="far fa-heart" ></i>
+        </button>
+        `;
+    }
+};
+
+
+
+const renderBookmarkButton = post => {
+    if (post.current_user_bookmark_id){
+        return `
+        <button 
+            data-post-id = "${post.id}"
+            data-like-id = "${post.current_user_bookmark_id}"
+            aria-checked="true"
+            aria-label="Bookmarked/NotBookmarked"
+            onclick="handleBookmark(event);" >
+            <i class="fas fa-bookmark" ></i>
+        </button>
+        `;
+    }else{
+        return `
+        <button 
+            data-post-id = "${post.id}"
+            aria-checked="false"
+            aria-label="Bookmarked/NotBookmarked"
+            onclick="handleBookmark(event);" >
+            <i class="far fa-bookmark" ></i>
+        </button>
+        `;
+    }
+};
+
+const stringToHTML = htmlString => {
+    var parser = new  DOMParser();
+    var doc = parser.parseFromString(htmlString, 'text/html');
+    return doc.body.firstChild;
+}
+
 const post2Html = post => {
     return `
-    
-    <div class="card">
-
+    <div id="post_${post.id}" class="card">
         <div class="carduserbox">
             <div class="myusername">
                 <p>
@@ -39,7 +166,7 @@ const post2Html = post => {
             <div class="iconsection">
                 <div class="iconsleft">
                      <div class="heart">
-                        <a onclick="handleLike(event)" ><i class="far fa-heart" aria-checked="false" ></i></a>
+                        ${renderLikeButton(post)}
                      </div>
                      <div class="textbubble">
                         <i class="far fa-comment"></i>
@@ -49,7 +176,7 @@ const post2Html = post => {
                     </div>
                 </div>
                 <div class="save">
-                    <i class="far fa-bookmark"></i>
+                    ${renderBookmarkButton(post)}
                 </div>
             </div>
             <div class="likesection">
@@ -229,64 +356,28 @@ const deleteFollowing = async (elem) => {
     console.log(following_deleted);
 };
 
-const toggleFollow = async(ev) =>{
-    const elem = ev.currentTarget
-    if (elem.getAttribute ('aria-checked') === 'false'){
-        console.log("create following")
-        await createFollowing(elem)
-    } else{
-        console.log('delete following')
-        await deleteFollowing(elem)
-    }
-};
-
-
-const createLike = async (elem) => {
-    const postbody = {"user_id":elem.dataset.curre}
-    const response = await fetch ('/api/post',{
-        method:"POST",
-        headers: {
-            'Content-type':'application/json',
-        },
-        body: JSON.stringify(postbody)
-    })
-    const liking = await response.json()
-    elem.innerHTML = "unlike";
-    elem.classList.add('unlike');
-    elem.classList.remove('like');
-    elem.setAttribute('aria-checked', 'true');
-    elem.setAttribute('aria-label', 'follow');
-    // elem.setAttribute('data-like-id', following.id);
-    console.log("liked");
-};
-
-// const deleteLike = async (elem) => {
-//     const response = await fetch (`/api/following/${elem.dataset.followingId}`,{
-//         method:"DELETE",
-//         headers: {
-//             'Content-type':'application/json',
-//         },
-//     })
-//     const following_deleted = await response.json()
-//     elem.innerHTML = "follow";
-//     elem.classList.add('follow');
-//     elem.classList.remove('unfollow');
-//     elem.setAttribute('aria-checked', 'false');
-//     elem.removeAttribute('data-following-id');
-//     console.log(following_deleted);
+// const toggleFollow = async(ev) =>{
+//     const elem = ev.currentTarget
+//     if (elem.getAttribute ('aria-checked') === 'false'){
+//         console.log("create following")
+//         await createFollowing(elem)
+//     } else{
+//         console.log('delete following')
+//         await deleteFollowing(elem)
+//     }
 // };
 
 
-const toggleLike = async(ev) =>{
-    const elem = ev.currentTarget
-    if (elem.getAttribute ('aria-checked') === 'false'){
-        console.log("create like")
-        await createLike(elem)
-    } else{
-        console.log('delete like')
-        await deleteLike(elem)
-    }
-};
+// const toggleLike = async(ev) =>{
+//     const elem = ev.currentTarget
+//     if (elem.getAttribute ('aria-checked') === 'false'){
+//         console.log("create like")
+//         await createLike(elem)
+//     } else{
+//         console.log('delete like')
+//         await deleteLike(elem)
+//     }
+// };
 
 
 
