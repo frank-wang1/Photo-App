@@ -68,20 +68,85 @@ const deleteLike = elem => {
     // console.log(following_deleted);
 };
 
-const redrawPost = postId => {
+const redrawPost = (postId, callback) => {
     fetch(`/api/posts/${postId}`)
         .then(response => response.json())
         .then(updatedPost => {
-            console.log(updatedPost);
-            const html = post2Html(updatedPost);
-            const newElement = stringToHTML(html);
-            const postElement = document.querySelector(`#post_${postId}`);
-            postElement.innerHTML = newElement.innerHTML;
+            if(!callback){
+                redrawCard(updatedPost);
+            }else{
+                callback(updatedPost);
+            }
     });
+};
+
+const redrawCard = post =>{
+    console.log(post);
+    const html = post2Html(post);
+    const newElement = stringToHTML(html);
+    const postElement = document.querySelector(`#post_${post.id}`);
+    postElement.innerHTML = newElement.innerHTML;
 }
 
 const handleBookmark = ev =>{
     console.log("handle bookmark functionality");
+    const elem = ev.currentTarget;
+    if (elem.getAttribute('aria-checked') === 'true'){
+        console.log('unbookmark post');
+        unbookmarkPost(elem);
+    }else {
+        console.log('bookmark post');
+        bookmarkPost(elem)
+    }
+};
+
+const bookmarkPost = elem => {
+    const postId = Number(elem.dataset.postId)
+    const postBody = {"post_id": postId}
+    fetch ('/api/bookmarks/',{
+        method:"POST",
+        headers: {
+            'Content-type':'application/json',
+        },
+        body: JSON.stringify(postBody)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        console.log('redraw the post');
+        redrawPost(postId);
+    });
+    // const liking = await response.json()
+    // elem.innerHTML = "unlike";
+    // elem.classList.add('unlike');
+    // elem.classList.remove('like');
+    // elem.setAttribute('aria-checked', 'true');
+    // elem.setAttribute('aria-label', 'follow');
+    // // elem.setAttribute('data-like-id', following.id);
+    // console.log("liked");
+};
+
+const unbookmarkPost = elem => {
+    const postId = Number(elem.dataset.postId)
+    console.log('unbookmark post', elem)
+    fetch (`/api/bookmarks/${elem.dataset.bookmarkId}`,{
+        method:"DELETE",
+        headers: {
+            'Content-type':'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        redrawPost(postId);
+    });
+    // const following_deleted = await response.json()
+    // elem.innerHTML = "follow";
+    // elem.classList.add('follow');
+    // elem.classList.remove('unfollow');
+    // elem.setAttribute('aria-checked', 'false');
+    // elem.removeAttribute('data-following-id');
+    // console.log(following_deleted);
 };
 
 // <section>
@@ -122,7 +187,7 @@ const renderBookmarkButton = post => {
         return `
         <button 
             data-post-id = "${post.id}"
-            data-like-id = "${post.current_user_bookmark_id}"
+            data-bookmark-id = "${post.current_user_bookmark_id}"
             aria-checked="true"
             aria-label="Bookmarked/NotBookmarked"
             onclick="handleBookmark(event);" >
@@ -147,6 +212,35 @@ const stringToHTML = htmlString => {
     var doc = parser.parseFromString(htmlString, 'text/html');
     return doc.body.firstChild;
 }
+
+//display comments need to be finished
+const displayComments = post => {
+    if (post.comments.length > 1){
+        //display button
+        return `
+        <div class="viewbutton"
+        <button  
+        class="viewcomments"
+        data-post-id=${post.id} 
+        onclick="showModal(event)"> 
+            View all ${post.comments.length} Comments
+        </button>
+        </div>`;
+    }else if(post.comments.length === 1){
+        //display single comment
+        return `<p>${post.comments[0].text}</p>`
+    }else{
+        return '';
+    }
+};
+
+const showModal = ev =>{
+    const postId = Number(ev.currentTarget.dataset.postId);
+    redrawPost(postId, post => {
+        const html = post2Modal(post);
+        document.querySelector(`#post_${post.id}`).insertAdjacentHTML('beforeend', html);
+    });
+};
 
 const post2Html = post => {
     return `
@@ -199,7 +293,7 @@ const post2Html = post => {
             </div>
 
 
-
+            ${displayComments(post)}
             <!-- {% if card.get('comments')|length > 1 %}
             <p>View all 3 comments</p>
             {% endif %} -->
@@ -245,13 +339,14 @@ const post2Html = post => {
                     </div>
                     <div class="addcomment">
                         <input type="text" placeholder="Add a comment..." title = "text_input_box" id="text">
-
                     </div>
                 </div>
                 <div class="post">
-                    <a href="url" class="more" target="blank">
+                    <button onclick="addComment(event)">
+                        <a href="url" class="more" target="blank">
                         Post
-                    </a>
+                        </a>
+                    </button>
                 </div>
 
             </div>
@@ -259,6 +354,57 @@ const post2Html = post => {
     `;
 };
 
+const addcomment = ev =>{
+
+};
+
+const post2Modal = post => {
+    return `
+    <div class="modal-bg" aria-hidden="false" role="dialog">
+            <div class="modal-body">
+                <button class="close" aria-label="Close the modal window" onclick="closeModal(event);">Close</button>
+                <div class="modimage">
+                <img src="${post.image_url}"/>
+                </div>
+                <div class="container">
+                        <h3>
+                        <img class="pic" alt"Profile of person who created post" src="${post.user.thumb_url}"/>
+                        ${post.user.username}
+                        </h3>
+                </div>
+            </div>
+    </div>
+        `;
+};
+
+// <div class="modal-body">
+                //     <img src="${post.image_url}"/>
+                //     <div class="row">
+                //         <p>Some comment text</p>
+                //         <button class="like-comment">some button</button>
+                //     </div>
+                //     <div class="row">
+                //         <p>Some comment text</p>
+                //         <button class="like-comment">some button</button>
+                //     </div>
+                //     <div class="row">
+                //         <p>Some comment text</p>
+                //         <button class="like-comment">some button</button>
+                //     </div>
+                //     <div class="row">
+                //         <p>Some comment text</p>
+                //         <button class="like-comment">some button</button>
+                //     </div>
+                //     <div class="row">
+                //         <p>Some comment text</p>
+                //         <button class="like-comment">some button</button>
+                //     </div>
+                // </div>
+
+const closeModal = ev =>{
+    console.log('close modal');
+    document.querySelector('.modal-bg').remove();
+};
 
 // fetch data from your API endpoint:
 const displayStories = () => {
@@ -297,7 +443,7 @@ const user2Html = user =>{
         </div>
         <div>
             <button
-                class=" link follow"
+                class="link follow"
                 aria-label="Follow"
                 aria-checked="false"
                 data-user-id = "${user.id}"
@@ -355,29 +501,6 @@ const deleteFollowing = async (elem) => {
     elem.removeAttribute('data-following-id');
     console.log(following_deleted);
 };
-
-// const toggleFollow = async(ev) =>{
-//     const elem = ev.currentTarget
-//     if (elem.getAttribute ('aria-checked') === 'false'){
-//         console.log("create following")
-//         await createFollowing(elem)
-//     } else{
-//         console.log('delete following')
-//         await deleteFollowing(elem)
-//     }
-// };
-
-
-// const toggleLike = async(ev) =>{
-//     const elem = ev.currentTarget
-//     if (elem.getAttribute ('aria-checked') === 'false'){
-//         console.log("create like")
-//         await createLike(elem)
-//     } else{
-//         console.log('delete like')
-//         await deleteLike(elem)
-//     }
-// };
 
 
 

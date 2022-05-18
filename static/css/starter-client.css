@@ -172,6 +172,36 @@ main {
     background-color: transparent;
     border: none;
 }
+
+.viewbutton{
+    padding-top: 0.5rem;
+    padding-left: 0.5rem;
+    color: #2c699b;
+}
+
+.viewbutton:hover {
+    color: #777;
+}
+
+.viewbutton.button{
+    background-color: transparent;
+    border: none;
+    
+}
+
+/* .viewbutton text{
+    color: #2c699b;
+} */
+
+.post button{
+    background-color: transparent;
+    border: none;
+}
+
+.post a:hover {
+    color: #777;
+}
+
 /* .card  button.link {
     font-size: 1em;
 }
@@ -432,6 +462,123 @@ div.cardsection{
     font-family: "Arial", sans-serif;
     color: #3871a7;
     
+}
+
+/****************************************/
+/*Modal*/
+.modal-bg {
+    /* background: rgba(50, 50, 50, 0.8);
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center; */
+    background: rgba(40,40,40,.8);
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* .modal {
+    width: 60vw;
+    height: auto;
+    max-height: 80vh;
+    background-color: white;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+} */
+
+.close {
+    /* align-self: flex-end; */
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    color: #fff;
+    border: 0;
+    font-size: 2em;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* .modal-body {
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+} */
+
+.modimage{
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50%;
+}
+
+.container{
+    height: 100%;
+    overflow-y: auto;
+    background: #fff;
+    min-width: 300px;
+}
+
+.container h3{
+    padding: 20px;
+    border-bottom: 1px solid #f2f2f2;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 100;
+}
+
+.container .pic{
+    /* min-width: 30px;
+    min-height: 30px;
+    border-radius: 15px;
+    border-width: 0;
+    margin-right: 10px; */
+    min-width: 30px;
+    min-height: 30px;
+    border: solid 1px #dbdbdb;
+    border-radius: 15px;
+}
+
+.modal-body{
+    height: 80vh;
+    width: 90vw;
+    background: #eee;
+    border-radius: 6px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    overflow-y: hidden;
+    align-items: center;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    align-content: flex-start;
+    padding: 10px;
+    align-items: center;
+    border-bottom: solid 1px #CCC;
 }
 
 
