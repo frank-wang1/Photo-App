@@ -215,24 +215,31 @@ const stringToHTML = htmlString => {
 
 //display comments need to be finished
 const displayComments = post => {
+    const comment = post.comments[post.comments.length - 1]
     if (post.comments.length > 1){
         //display button
         return `
-        <div class="viewbutton"
+        <div class="viewbutton">
         <button  
         class="viewcomments"
         data-post-id=${post.id} 
         onclick="showModal(event)"> 
             View all ${post.comments.length} Comments
         </button>
+        </div>
+        <div class="firstcomment">
+            <p> <strong>${comment.user.username}</strong> ${comment.text}</p>
         </div>`;
     }else if(post.comments.length === 1){
         //display single comment
-        return `<p>${post.comments[0].text}</p>`
+        const firstcomment = post.comments[0]
+        return `<p><strong>${firstcomment.user.username}</strong> ${firstcomment.text}</p>`
     }else{
         return '';
     }
 };
+
+
 
 const showModal = ev =>{
     const postId = Number(ev.currentTarget.dataset.postId);
@@ -292,40 +299,10 @@ const post2Html = post => {
                 
             </div>
 
-
-            ${displayComments(post)}
-            <!-- {% if card.get('comments')|length > 1 %}
-            <p>View all 3 comments</p>
-            {% endif %} -->
-
-            <!-- {% if card.get('comments')|length > 1 %}
-            <p>View all {{card.get('comments')|length}} comments</p>
-            {% endif %} -->
-
             <div class="commentsection">
-                {% if card.get('comments')|length > 1 %}
-                <a href='#' class="blue">View all {{card.get('comments')|length}} comments</a>
-                <div class="comment">
-                    <div class="userhandle">
-                        <p> 
-                            <span style="font-weight:bold">{{card.comments[0].user.username}}</span>
-                            {{card.comments[0].get('text')}}
-                        </p>
-                    </div>
-                </div>
-                {% elif card.get('comments')|length == 1 %}
-                <div class="comment">
-                    <div class="userhandle">
-                        <p>
-                            <p> 
-                                <span style="font-weight:bold">{{card.comments[0].user.username}}</span>
-                                {{card.comments[0].get('text')}}
-                            </p>
-                        </p>
-                    </div>  
-                </div>
-                {% endif %}
+            ${displayComments(post)}
             </div>
+            
             <div class="daysago">
                     <p>
                         ${post.display_time}
@@ -338,14 +315,12 @@ const post2Html = post => {
                         <i class="far fa-smile"></i>
                     </div>
                     <div class="addcomment">
-                        <input type="text" placeholder="Add a comment..." title = "text_input_box" id="text">
+                        <input type="text" id="newcomm" placeholder="Add a comment..." title = "text_input_box" id="text">
                     </div>
                 </div>
                 <div class="post">
                     <button onclick="addComment(event)">
-                        <a href="url" class="more" target="blank">
                         Post
-                        </a>
                     </button>
                 </div>
 
@@ -354,9 +329,47 @@ const post2Html = post => {
     `;
 };
 
-const addcomment = ev =>{
-
+const addComment = ev => {
+    var elem = ev.currentTarget;
+    var postId = elem.dataset.postId;
+    var text = document.querySelector(`#newcomm-${postId}`).value;
+    const postData = {
+        "post_id": postId,
+        "text": text
+    };
+    fetch("/api/comments", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(postData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            updatePost(postId);
+        });
 };
+
+
+// const addComment = ev =>{
+//     // const comment = post.comments[post.comments.length - 1]
+//     // if (post.comments.length > 1){
+//     //     //display button
+//     //     return `
+//     //     <div class="viewbutton">
+//     //     <button  
+//     //     class="viewcomments"
+//     //     data-post-id=${post.id} 
+//     //     onclick="showModal(event)"> 
+//     //         View all ${post.comments.length} Comments
+//     //     </button>
+//     //     </div>
+//     //     <div class="firstcomment">
+//     //         <p> <strong>${comment.user.username}</strong> ${comment.text}</p>
+//     //     </div>`;
+//     console.log('added comment');
+// };
 
 const post2Modal = post => {
     return `
@@ -368,7 +381,7 @@ const post2Modal = post => {
                 </div>
                 <div class="container">
                         <h3>
-                        <img class="pic" alt"Profile of person who created post" src="${post.user.thumb_url}"/>
+                        <img class="pic" alt="Profile of person who created post" src="${post.user.thumb_url}"/>
                         ${post.user.username}
                         </h3>
                 </div>

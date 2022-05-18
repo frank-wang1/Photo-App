@@ -176,16 +176,16 @@ main {
 .viewbutton{
     padding-top: 0.5rem;
     padding-left: 0.5rem;
-    color: #2c699b;
 }
 
-.viewbutton:hover {
+.viewbutton button:hover {
     color: #777;
 }
 
-.viewbutton.button{
+.viewbutton button{
     background-color: transparent;
     border: none;
+    color: #2c699b;
     
 }
 
@@ -541,7 +541,7 @@ div.cardsection{
     margin: 0;
     display: flex;
     align-items: center;
-    position: -webkit-sticky;
+    justify-content: space-evenly;
     position: sticky;
     top: 0;
     background: #fff;
@@ -554,10 +554,11 @@ div.cardsection{
     border-radius: 15px;
     border-width: 0;
     margin-right: 10px; */
-    min-width: 30px;
-    min-height: 30px;
+    height: 50px;
+    width: 50px;
     border: solid 1px #dbdbdb;
-    border-radius: 15px;
+    border-width: 0;
+    border-radius: 50%;
 }
 
 .modal-body{
