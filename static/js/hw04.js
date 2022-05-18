@@ -315,11 +315,11 @@ const post2Html = post => {
                         <i class="far fa-smile"></i>
                     </div>
                     <div class="addcomment">
-                        <input type="text" id="newcomm" placeholder="Add a comment..." title = "text_input_box" id="text">
+                        <input type="text" id="newcomm_${post.id}" placeholder="Add a comment..." title = "text_input_box" value="">
                     </div>
                 </div>
                 <div class="post">
-                    <button onclick="addComment(event)">
+                    <button data-post-id=${post.id} onclick="addComment(event)">
                         Post
                     </button>
                 </div>
@@ -331,8 +331,10 @@ const post2Html = post => {
 
 const addComment = ev => {
     var elem = ev.currentTarget;
+    console.log(elem.dataset);
     var postId = elem.dataset.postId;
-    var text = document.querySelector(`#newcomm-${postId}`).value;
+    console.log(postId);
+    var text = document.querySelector(`#newcomm_${postId}`).value;
     const postData = {
         "post_id": postId,
         "text": text
@@ -347,7 +349,7 @@ const addComment = ev => {
         .then(response => response.json())
         .then(data => {
             console.log(data);
-            updatePost(postId);
+            redrawPost(postId);
         });
 };
 
@@ -384,6 +386,35 @@ const post2Modal = post => {
                         <img class="pic" alt="Profile of person who created post" src="${post.user.thumb_url}"/>
                         ${post.user.username}
                         </h3>
+                        <div class="row">
+                         <p>Some comment text</p>
+                         <button class="like-comment">some button</button>
+                        </div>
+                        <div class="row">
+                         <p>Some comment text</p>
+                         <button class="like-comment">some button</button>
+                        </div>
+                        <div class="row">
+                         <p>Some comment text</p>
+                         <button class="like-comment">some button</button>
+                        </div>
+                        <div class="row">
+                         <p>Some comment text</p>
+                         <button class="like-comment">some button</button>
+                        </div>
+                        <div class="row">
+                         <p>Some comment text</p>
+                         <button class="like-comment">some button</button>
+                        </div>
+                        <div class="row">
+                         <p>Some comment text</p>
+                         <button class="like-comment">some button</button>
+                        </div>
+                        <div class="row">
+                         <p>Some comment text</p>
+                         <button class="like-comment">some button</button>
+                        </div>
+
                 </div>
             </div>
     </div>
@@ -515,6 +546,17 @@ const deleteFollowing = async (elem) => {
     console.log(following_deleted);
 };
 
+const toggleFollow = async(ev) =>{
+    const elem = ev.currentTarget
+    if (elem.getAttribute ('aria-checked') === 'false'){
+        console.log("create follwoing")
+        await createFollowing(elem)
+    } else{
+        console.log('delete following')
+        await deleteFollowing(elem)
+    }
+};
+
 
 
 const initPage = () => {
@@ -524,67 +566,8 @@ const initPage = () => {
     
 };
 
+
 // invoke init page to display stories:
 initPage();
 
 
-// const toggleFollow = ev =>{
-//     const elem = ev.currentTarget
-//     if (elem.innerHTML === 'follow'){
-//         console.log("create following")
-//         createFollowing(elem.dataset.userId, elem);
-//     } else{
-//         console.log('delete following')
-//         deleteFollowing(elem.dataset.followingId, elem);
-//     }
-// };
-
-
-// const createFollowing = (userId, elem) => {
-//     const postBody = {"user_id":userId}
-//     fetch ('/api/following/',{
-//         method:"POST",
-//         headers: {
-//             'Content type': 'application/json',
-//         },
-//         body: JSON.stringify(postBody)
-//     })
-//     .then(response => response.json())
-//     .then(data => {
-//         console.log(data);
-//         elem.innerHTML = 'unfollow';
-//         elem.classList.add('unfollow');
-//         elem.classList.remove('follow');
-//         elem.setAttribute('aria-checked', 'true');
-//         elem.setAttribute('data-following-id', data.id);
-//     });
-//     // const following = await response.json()
-//     // elem.innerHTML = "unfollow";
-//     // elem.classList.add('unfollow');
-//     // elem.classList.remove('follow');
-//     // elem.setAttribute('aria-checked', 'true');
-//     // elem.setAttribute('data-following-id', following.id);
-//     // console.log("following");
-// };
-
-// const deleteFollowing = (followingId, elem) => {
-//     fetch (`/api/following/${followingId}`,{
-//         method:"DELETE"
-//     })
-//     .then(response => response.json())
-//     .then(data => {
-//         console.log(data);
-//         elem.innerHTML = "follow";
-//         elem.classList.add('follow');
-//         elem.classList.remove('unfollow');
-//         elem.setAttribute('aria-checked', 'false');
-//         elem.removeAttribute('data-following-id');
-//     });
-//     // const following_deleted = await response.json()
-//     // elem.innerHTML = "follow";
-//     // elem.classList.add('follow');
-//     // elem.classList.remove('unfollow');
-//     // elem.setAttribute('aria-checked', 'false');
-//     // elem.removeAttribute('data-following-id');
-//     // console.log(following_deleted);
-// };
