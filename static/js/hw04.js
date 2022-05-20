@@ -246,6 +246,11 @@ const showModal = ev =>{
     redrawPost(postId, post => {
         const html = post2Modal(post);
         document.querySelector(`#post_${post.id}`).insertAdjacentHTML('beforeend', html);
+    })
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeModal();
+        }
     });
 };
 
@@ -383,43 +388,60 @@ const post2Modal = post => {
                 </div>
                 <div class="container">
                         <h3>
-                        <img class="pic" alt="Profile of person who created post" src="${post.user.thumb_url}"/>
+                        <img class="profile-pic" alt="Profile pic of comment poster" src="${post.user.thumb_url}"/>
                         ${post.user.username}
                         </h3>
-                        <div class="row">
-                         <p>Some comment text</p>
-                         <button class="like-comment">some button</button>
-                        </div>
-                        <div class="row">
-                         <p>Some comment text</p>
-                         <button class="like-comment">some button</button>
-                        </div>
-                        <div class="row">
-                         <p>Some comment text</p>
-                         <button class="like-comment">some button</button>
-                        </div>
-                        <div class="row">
-                         <p>Some comment text</p>
-                         <button class="like-comment">some button</button>
-                        </div>
-                        <div class="row">
-                         <p>Some comment text</p>
-                         <button class="like-comment">some button</button>
-                        </div>
-                        <div class="row">
-                         <p>Some comment text</p>
-                         <button class="like-comment">some button</button>
-                        </div>
-                        <div class="row">
-                         <p>Some comment text</p>
-                         <button class="like-comment">some button</button>
-                        </div>
-
+                        <div class="modal-comments"> ${createCommentsModal(post.comments)} </div>
                 </div>
             </div>
     </div>
         `;
 };
+
+const createCommentsModal = comments => {
+    let html = ``;
+    for (let comment of comments) {
+        html += `
+            <div class="modal-comment">
+                <img src="${ comment.user.thumb_url }" alt="Profile pic of ${ comment.user.username }" />
+                <p class="modal-comment-content">
+                    <strong> ${ comment.user.username } </strong> ${ comment.text }
+                </p>
+            </div>
+            <p class="time"> ${ comment.display_time } </p>
+        `;
+    }
+    return html;
+};
+
+                        /*<div class="row">
+                         <p>Some comment text</p>
+                         <button class="like-comment">some button</button>
+                        </div>
+                        <div class="row">
+                         <p>Some comment text</p>
+                         <button class="like-comment">some button</button>
+                        </div>
+                        <div class="row">
+                         <p>Some comment text</p>
+                         <button class="like-comment">some button</button>
+                        </div>
+                        <div class="row">
+                         <p>Some comment text</p>
+                         <button class="like-comment">some button</button>
+                        </div>
+                        <div class="row">
+                         <p>Some comment text</p>
+                         <button class="like-comment">some button</button>
+                        </div>
+                        <div class="row">
+                         <p>Some comment text</p>
+                         <button class="like-comment">some button</button>
+                        </div>
+                        <div class="row">
+                         <p>Some comment text</p>
+                         <button class="like-comment">some button</button>
+                        </div>*/
 
 // <div class="modal-body">
                 //     <img src="${post.image_url}"/>
