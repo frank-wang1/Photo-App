@@ -408,7 +408,9 @@ const createCommentsModal = comments => {
                     <strong> ${ comment.user.username } </strong> ${ comment.text }
                 </p>
             </div>
-            <p class="time"> ${ comment.display_time } </p>
+            <p class="time"> 
+            <strong> ${ comment.display_time } </strong>
+            </p>
         `;
     }
     return html;
