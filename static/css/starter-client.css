@@ -49,6 +49,15 @@ far fa-heart.unlike{
     color: red;
 }
 
+.commwithoutheart{
+    display: flex;
+    justify-content: space-between;
+}
+
+.commwithoutheart i{
+    margin-top: 15px;
+}
+
 header {
     margin-top: 20px;
 }

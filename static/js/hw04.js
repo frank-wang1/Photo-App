@@ -76,6 +76,7 @@ const redrawPost = (postId, callback) => {
                 redrawCard(updatedPost);
             }else{
                 callback(updatedPost);
+                document.getElementById(`#newcomm_${postId}`).focus();
             }
     });
 };
@@ -246,12 +247,13 @@ const showModal = ev =>{
     redrawPost(postId, post => {
         const html = post2Modal(post);
         document.querySelector(`#post_${post.id}`).insertAdjacentHTML('beforeend', html);
-    })
+    });
     document.addEventListener('keydown', function(event) {
         if (event.key === 'Escape') {
             closeModal();
         }
     });
+    document.body.classList.add('modal');
 };
 
 const post2Html = post => {
@@ -398,19 +400,26 @@ const post2Modal = post => {
         `;
 };
 
+
+
 const createCommentsModal = comments => {
     let html = ``;
     for (let comment of comments) {
         html += `
-            <div class="modal-comment">
-                <img src="${ comment.user.thumb_url }" alt="Profile pic of ${ comment.user.username }" />
-                <p class="modal-comment-content">
-                    <strong> ${ comment.user.username } </strong> ${ comment.text }
-                </p>
+            <div class = "commwithoutheart">
+                <div>
+                    <div class="modal-comment">
+                        <img src="${ comment.user.thumb_url }" alt="Profile pic of ${ comment.user.username }" />
+                        <p class="modal-comment-content">
+                            <strong> ${ comment.user.username } </strong> ${ comment.text }
+                        </p>
+                    </div>
+                    <p class="time"> 
+                    <strong> ${ comment.display_time } </strong>
+                    </p>
+                </div>
+                <i class="far fa-heart" ></i>
             </div>
-            <p class="time"> 
-            <strong> ${ comment.display_time } </strong>
-            </p>
         `;
     }
     return html;
@@ -472,6 +481,9 @@ const createCommentsModal = comments => {
 const closeModal = ev =>{
     console.log('close modal');
     document.querySelector('.modal-bg').remove();
+    var $body = $(window.document.body);
+    $body.css("overflow", "auto");
+    $body.width("auto");
 };
 
 // fetch data from your API endpoint:
@@ -563,7 +575,7 @@ const deleteFollowing = async (elem) => {
     })
     const following_deleted = await response.json()
     elem.innerHTML = "follow";
-    elem.classList.add('follow');
+    elem.classList.add('follow'); 
     elem.classList.remove('unfollow');
     elem.setAttribute('aria-checked', 'false');
     elem.removeAttribute('data-following-id');
