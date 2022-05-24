@@ -384,7 +384,7 @@ const post2Modal = post => {
     return `
     <div class="modal-bg" aria-hidden="false" role="dialog">
             <div class="modal-body">
-                <button class="close" aria-label="Close the modal window" onclick="closeModal(event);">Close</button>
+                <button class="close" aria-label="Close the modal window" aria-hidden="true" onclick="closeModal(event);">Close</button>
                 <div class="modimage">
                 <img src="${post.image_url}"/>
                 </div>

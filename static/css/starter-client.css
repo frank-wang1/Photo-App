@@ -48,6 +48,9 @@ button.link.unfollow {
 far fa-heart.unlike{
     color: red;
 }
+.commwithoutheart .fa-heart:before {
+    margin-right: 17px;
+}
 
 .commwithoutheart{
     display: flex;
@@ -630,6 +633,7 @@ div.cardsection{
     align-items: center;
     border-bottom: solid 1px #CCC;
 }
+
 
 
 
