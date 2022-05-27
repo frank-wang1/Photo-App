@@ -26,6 +26,7 @@ const createLike = elem => {
         method:"POST",
         headers: {
             'Content-type':'application/json',
+            'X-CSRF-TOKEN': getCookie('csrf_access_token')
         },
         body: JSON.stringify(postBody)
     })
@@ -52,6 +53,7 @@ const deleteLike = elem => {
         method:"DELETE",
         headers: {
             'Content-type':'application/json',
+            'X-CSRF-TOKEN': getCookie('csrf_access_token')
         },
     })
     .then(response => response.json())
@@ -107,6 +109,7 @@ const bookmarkPost = elem => {
         method:"POST",
         headers: {
             'Content-type':'application/json',
+            'X-CSRF-TOKEN': getCookie('csrf_access_token')
         },
         body: JSON.stringify(postBody)
     })
@@ -133,6 +136,7 @@ const unbookmarkPost = elem => {
         method:"DELETE",
         headers: {
             'Content-type':'application/json',
+            'X-CSRF-TOKEN': getCookie('csrf_access_token')
         },
     })
     .then(response => response.json())
@@ -343,6 +347,7 @@ const addComment = ev => {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': getCookie('csrf_access_token')
             },
             body: JSON.stringify(postData)
         })
@@ -498,6 +503,23 @@ const user2Html = user =>{
 };
 //https://photoapp-spring.herokuapp.com/api/stories
 
+const getCookie = key => {
+    let name = key + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    console.log(decodedCookie);
+    let ca = decodedCookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        console.log(c);
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+};
 
 const displayPanel = async () => {
     const profile_res = await fetch('/api/profile')
@@ -517,6 +539,7 @@ const createFollowing = async (elem) => {
         method:"POST",
         headers: {
             'Content-type':'application/json',
+            'X-CSRF-TOKEN': getCookie('csrf_access_token')
         },
         body: JSON.stringify(postbody)
     })
@@ -535,6 +558,7 @@ const deleteFollowing = async (elem) => {
         method:"DELETE",
         headers: {
             'Content-type':'application/json',
+            'X-CSRF-TOKEN': getCookie('csrf_access_token')
         },
     })
     const following_deleted = await response.json()
